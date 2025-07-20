@@ -1,0 +1,29 @@
+body {
+  font-family: sans-serif;
+  max-width: 800px;
+  margin: auto;
+  padding: 2rem;
+  background-color: #fdf9f5;
+  color: #444;
+}
+
+input, textarea, button {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+button {
+  background-color: #4B6A88;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+ul li {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.5rem;
+}

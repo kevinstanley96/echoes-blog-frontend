@@ -1,0 +1,131 @@
+<body>
+  <!-- 📰 Main Post Content -->
+  <main id="single-post"></main>
+
+  <!-- 📝 Comment Form -->
+  <section>
+    <h3>Leave a Comment</h3>
+    <form id="comment-form">
+      <input type="text" id="commenterName" name="author" placeholder="Your name" required><br>
+      <textarea id="commentText" name="text" placeholder="Write your comment..." required></textarea><br>
+      <button type="submit">Send</button>
+    </form>
+  </section>
+
+  <!-- 💬 Comment List -->
+  <section>
+    <h3>Comments</h3>
+    <div id="comments-section"></div>
+  </section>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+
+      // Load single post
+      async function loadPost() {
+        const res = await fetch(`https://echoes-blog-api.onrender.com/api/posts/${id}`);
+        const post = await res.json();
+
+        document.getElementById('single-post').innerHTML = `
+          <h1>${post.title}</h1>
+          <p><em>${new Date(post.date).toLocaleDateString()}</em> — ${post.category}</p>
+          ${post.image ? `<img src="${post.image}" style="max-width:100%">` : ''}
+          <p>${post.body}</p>
+          <hr>
+        `;
+
+        loadComments();
+      }
+
+      // Load comments
+      async function loadComments() {
+        const res = await fetch(`https://echoes-blog-api.onrender.com/api/comments/${id}`);
+        const comments = await res.json();
+
+        const section = document.getElementById('comments-section');
+        section.innerHTML = comments.map(comment => `
+          <div style="border-bottom:1px solid #ccc; padding:8px 0">
+            <p><strong>${comment.author || 'Anonymous'}</strong>: ${comment.text}</p>
+            <small>❤️ ${comment.likes || 0}
+              <button onclick="likeComment('${comment._id}')">Like</button> ·
+              <button onclick="toggleReplyForm('${comment._id}')">Reply</button>
+            </small>
+            <div id="replies-${comment._id}" style="margin-left:20px; font-size:0.9em;">
+              ${(comment.replies || []).map(reply => `<p>↪️ ${reply.text}</p>`).join('')}
+            </div>
+            <form id="reply-form-${comment._id}" style="display:none; margin-top:5px;" onsubmit="submitReply(event, '${comment._id}')">
+              <input type="text" name="text" placeholder="Your reply..." required>
+              <button type="submit">Send</button>
+            </form>
+          </div>
+        `).join('');
+      }
+
+      // Submit new comment
+document.getElementById('comment-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const author = document.getElementById('commenterName').value.trim() || 'Anonymous';
+  const text = document.getElementById('commentText').value.trim();
+
+  if (!text) {
+    alert("Comment cannot be empty.");
+    return;
+  }
+
+  try {
+    const res = await fetch(`https://echoes-blog-api.onrender.com/api/comments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ postId: id, author, text })
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.error || 'Failed to send comment.');
+    }
+
+    e.target.reset();
+    loadComments();
+  } catch (err) {
+    console.error("Failed to send comment:", err.message);
+    alert("Something went wrong. Please try again.");
+  }
+});
+
+      // Like a comment
+      window.likeComment = async function(commentId) {
+        await fetch(`https://echoes-blog-api.onrender.com/api/comments/${commentId}/like`, {
+          method: 'POST'
+        });
+        loadComments();
+      };
+
+      // Toggle reply form visibility
+      window.toggleReplyForm = function(commentId) {
+        const form = document.getElementById(`reply-form-${commentId}`);
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+      };
+
+      // Submit a reply
+      window.submitReply = async function(event, commentId) {
+        event.preventDefault();
+        const input = event.target.text;
+        const reply = input.value;
+
+        await fetch(`https://echoes-blog-api.onrender.com/api/comments/${commentId}/reply`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: reply })
+        });
+
+        input.value = '';
+        loadComments();
+      };
+
+      loadPost();
+    });
+  </script>
+</body>

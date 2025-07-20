@@ -1,0 +1,32 @@
+body {
+  font-family: 'Lora', serif;
+  background-color: #FAF3E0;
+  color: #5A4632;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+header {
+  background: #DDB6A1;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+nav a {
+  margin: 0 1rem;
+  color: #4B6A88;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+main {
+  padding: 2rem;
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: #E6DAD1;
+  font-style: italic;
+}

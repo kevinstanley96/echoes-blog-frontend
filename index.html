@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dalaicham's Blog</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Lora&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>Dalaicham's Blog</h1>
+    <nav>
+        <a href="index.html" data-i18n="home">Home</a>
+        <a href="archive.html" data-i18n="archive">Archive</a>
+        <a href="about.html" data-i18n="about">About</a>
+        <a href="contact.html" data-i18n="contact">Contact</a>
+    </nav>
+    <div style="text-align: right; margin: 1rem;">
+  <label for="langSwitch">🌐 Language:</label>
+  <select id="langSwitch" onchange="changeLanguage(this.value)">
+    <option value="ht" selected>Kreyòl</option>
+    <option value="en">English</option>
+  </select>
+</div>
+  </header>
+
+    <main id="post-preview">
+        <div id="posts"></div>
+    </main>
+
+  <footer>
+  <p data-i18n="footer">Life is like a box of chocolates...</p>
+</footer>
+
+  <script src="https://unpkg.com/i18next@21.6.14/dist/umd/i18next.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

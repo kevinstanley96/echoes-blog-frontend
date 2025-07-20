@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="css/login.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+  <div class="login-container">
+    <h2>Admin Login</h2>
+    <form id="loginForm">
+      <input type="password" id="password" placeholder="Enter admin password" required />
+      <button type="submit">Login</button>
+      <p id="error" class="error-message"></p>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const password = document.getElementById('password').value;
+      const errorText = document.getElementById('error');
+
+      const res = await fetch('https://echoes-blog-api.onrender.com/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+      });
+
+      if (res.ok) {
+        localStorage.setItem('adminLoggedIn', true);
+        window.location.href = 'dashboard.html';
+      } else {
+        errorText.textContent = 'Incorrect password';
+      }
+    });
+  </script>
+</body>
+</html>

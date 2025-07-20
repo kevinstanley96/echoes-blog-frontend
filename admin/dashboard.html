@@ -9,6 +9,14 @@
 <body>
   <h1>Admin Dashboard</h1>
 
+  <button onclick="logout()">Logout</button>
+<script>
+  function logout() {
+    localStorage.removeItem('adminLoggedIn');
+    window.location.href = 'login.html';
+  }
+</script>
+
   <section id="new-post">
     <h2>Create New Post</h2>
     <form id="postForm">
@@ -27,6 +35,11 @@
     <ul id="posts"></ul>
   </section>
 
+<script>
+  if (!localStorage.getItem('adminLoggedIn')) {
+    window.location.href = 'login.html';
+  }
+</script>
   <script src="js/dashboard.js"></script>
 </body>
 </html>

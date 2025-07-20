@@ -28,12 +28,13 @@
     })
     .then(res => res.json())
     .then(data => {
-      if(data.success){
-        window.location.href = 'dashboard.html';
-      } else {
-        alert('Incorrect password!');
-      }
-    })
+  if(data.success){
+    localStorage.setItem('adminLoggedIn', 'true');
+    window.location.href = 'dashboard.html';
+  } else {
+    alert('Incorrect password!');
+  }
+})
     .catch(err => console.error(err));
   });
 </script>

@@ -30,6 +30,7 @@
     .then(data => {
   if(data.success){
     localStorage.setItem('adminLoggedIn', 'true');
+    console.log("adminLoggedIn key set:", localStorage.getItem('adminLoggedIn'));
     window.location.href = 'dashboard.html';
   } else {
     alert('Incorrect password!');
